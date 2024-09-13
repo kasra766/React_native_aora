@@ -12,10 +12,10 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
+
       }}>
       <Tabs.Screen
-        name="index"
+        name="home"
         options={{
           title: 'Home',
           tabBarIcon: ({ color, focused }) => (
@@ -24,14 +24,32 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="bookmark"
         options={{
-          title: 'Explore',
+          title: 'Bookmark',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
           ),
         }}
       />
+        <Tabs.Screen
+            name="create"
+            options={{
+                title: 'Create',
+                tabBarIcon: ({ color, focused }) => (
+                    <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+                ),
+            }}
+        />
+        <Tabs.Screen
+            name="profile"
+            options={{
+                title: 'Profile',
+                tabBarIcon: ({ color, focused }) => (
+                    <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+                ),
+            }}
+        />
     </Tabs>
   );
 }
