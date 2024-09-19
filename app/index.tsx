@@ -1,9 +1,10 @@
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Text, Image, ScrollView } from "react-native";
-import images from "@/constants/images";
+import { images } from "@/constants";
 import { CustomButton } from "@/components/CustomButton";
-import {StatusBar} from "expo-status-bar";
+import { StatusBar } from "expo-status-bar";
+
 export default function Welcome() {
   return (
     <SafeAreaView className="bg-primary h-full">
@@ -41,17 +42,12 @@ export default function Welcome() {
           </Text>
           <CustomButton
             title={"Continue with Email"}
-            handlePress={() => {
-              router.push("/sign-in");
-            }}
+            handlePress={() => router.push("/sign-in")}
             containerStyles="w-full mt-7"
           />
         </View>
       </ScrollView>
-        <StatusBar
-        backgroundColor='#161622'
-        style='light'
-        />
+      <StatusBar backgroundColor="#161622" style="light" />
     </SafeAreaView>
   );
 }
