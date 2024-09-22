@@ -1,20 +1,13 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Alert, Image, ScrollView, Text, View } from "react-native";
+import { Image, ScrollView, Text, View } from "react-native";
 import { images } from "@/constants";
 import { FormField } from "@/components/FormField";
-import { useState } from "react";
 import { CustomButton } from "@/components/CustomButton";
 import { Link } from "expo-router";
+import { useSignInHandlers } from "@/hooks/useAuthHandlers";
 
 export default function SignIn() {
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-  });
-
-  function handleSubmit() {
-    Alert.alert(form.email, form.password);
-  }
+  const { isSubmitting, setForm, form, handleSubmit } = useSignInHandlers();
   return (
     <SafeAreaView>
       <ScrollView contentContainerStyle={{ height: "100%" }}>
