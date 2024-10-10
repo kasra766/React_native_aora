@@ -5,6 +5,9 @@ import { SearchInput } from "@/components/SearchInput";
 import { TrendingList } from "@/components/TrendingList";
 import { EmptyState } from "@/components/EmptyState";
 import { useState } from "react";
+import { useAppWrite } from "@/hooks/useAppWrite";
+import { getAllPosts } from "@/lib/appWrite";
+import { VideoCard } from "@/components/VideoCard";
 
 const mockData = [
   {
@@ -19,18 +22,28 @@ const mockData = [
 ];
 
 export default function Home() {
+  const { data: posts, isLoading, reFetch } = useAppWrite(getAllPosts);
+
   const [refreshing, setRefreshing] = useState(false);
-  const onRefresh = () => {
+  const onRefresh = async () => {
     setRefreshing(true);
-    ///
+    await reFetch();
     setRefreshing(false);
   };
   return (
     <SafeAreaView className="  bg-primary h-full">
       <FlatList
-        data={mockData}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <Text className="text-white">{item.id}</Text>}
+        data={posts ?? []}
+        keyExtractor={(item) => item.$id}
+        renderItem={({ item }) => (
+          <VideoCard
+            title={item.title}
+            thumbnail={item.thumbnail}
+            video={item.video}
+            creator={item.creator.username}
+            avatar={item.creator.avatar}
+          />
+        )}
         ListHeaderComponent={() => (
           <View className="my-6 px-4 space-y-6">
             <View className="justify-between items-start flex-row mb-6">

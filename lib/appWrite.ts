@@ -90,3 +90,15 @@ export async function getCurrentUser() {
     console.error(e);
   }
 }
+
+export async function getAllPosts() {
+  try {
+    const posts = await databases.listDocuments(
+      config.databaseId,
+      config.videoCollectionId,
+    );
+    return posts.documents
+  } catch (error) {
+    throw new Error(error as any);
+  }
+}
