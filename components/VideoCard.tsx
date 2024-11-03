@@ -1,10 +1,10 @@
-import { Image, Text, View } from "react-native";
+import {Image, Text, TouchableOpacity, View} from "react-native";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
-import React from "react";
+import React, {useState} from "react";
 
 interface IVideoProps { title:string, creator:string, avatar:string, thumbnail:string, video:string }
 export function VideoCard({ title, creator, avatar, thumbnail, video }: IVideoProps) {
-
+const [play,setPlay]=useState(false)
 
   return (
     <View className="flex-col items-center px-4 mb-14">
@@ -33,9 +33,27 @@ export function VideoCard({ title, creator, avatar, thumbnail, video }: IVideoPr
           </View>
         </View>
         <View className="pt-2">
-          <TabBarIcon name="menu" color="#fff" />
+          <TabBarIcon name="ellipsis-vertical" color="#fff" />
         </View>
       </View>
+
+
+      {
+        play?<Text className='text-white'>playing </Text>
+            :
+            <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => setPlay(!play)}
+            className='w-full h-60 rounded-xl mt-3 relative justify-center items-center'
+            >
+              <Image
+                  source={{uri:thumbnail}}
+                  resizeMode='cover'
+                  className='w-full h-full rounded-xl mt-3'
+              />
+              <TabBarIcon name='play-circle-outline' className='absolute w-12 h-12' color='#fff'/>
+            </TouchableOpacity>
+      }
     </View>
   );
 }
