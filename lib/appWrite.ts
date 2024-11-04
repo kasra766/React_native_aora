@@ -102,3 +102,16 @@ export async function getAllPosts() {
     throw new Error(error as any);
   }
 }
+
+export async function getLatestPosts() {
+  try {
+    const posts = await databases.listDocuments(
+        config.databaseId,
+        config.videoCollectionId,
+        [Query.orderDesc('$createdAt'),Query.limit(7)]
+    );
+    return posts.documents
+  } catch (error) {
+    throw new Error(error as any);
+  }
+}

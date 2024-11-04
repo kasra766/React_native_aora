@@ -6,7 +6,7 @@ import { TrendingList } from "@/components/TrendingList";
 import { EmptyState } from "@/components/EmptyState";
 import { useState } from "react";
 import { useAppWrite } from "@/hooks/useAppWrite";
-import { getAllPosts } from "@/lib/appWrite";
+import {getAllPosts, getLatestPosts} from "@/lib/appWrite";
 import { VideoCard } from "@/components/VideoCard";
 
 const mockData = [
@@ -23,6 +23,7 @@ const mockData = [
 
 export default function Home() {
   const { data: posts, isLoading, reFetch } = useAppWrite(getAllPosts);
+  const { data: latestPosts} = useAppWrite(getLatestPosts);
 
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = async () => {
@@ -69,7 +70,7 @@ export default function Home() {
                 Latest Videos
               </Text>
             </View>
-            <TrendingList posts={mockData} />
+            <TrendingList posts={latestPosts??[]} />
           </View>
         )}
         ListEmptyComponent={() => (
