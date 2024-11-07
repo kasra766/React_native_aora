@@ -1,10 +1,23 @@
-import {Image, Text, TouchableOpacity, View} from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
-import React, {useState} from "react";
+import React, { useState } from "react";
+import { ResizeMode, Video } from "expo-av";
 
-interface IVideoProps { title:string, creator:string, avatar:string, thumbnail:string, video:string }
-export function VideoCard({ title, creator, avatar, thumbnail, video }: IVideoProps) {
-const [play,setPlay]=useState(false)
+interface IVideoProps {
+  title: string;
+  creator: string;
+  avatar: string;
+  thumbnail: string;
+  video: string;
+}
+export function VideoCard({
+  title,
+  creator,
+  avatar,
+  thumbnail,
+  video,
+}: IVideoProps) {
+  const [play, setPlay] = useState(false);
 
   return (
     <View className="flex-col items-center px-4 mb-14">
@@ -37,23 +50,38 @@ const [play,setPlay]=useState(false)
         </View>
       </View>
 
-
-      {
-        play?<Text className='text-white'>playing </Text>
-            :
-            <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={() => setPlay(!play)}
-            className='w-full h-60 rounded-xl mt-3 relative justify-center items-center'
-            >
-              <Image
-                  source={{uri:thumbnail}}
-                  resizeMode='cover'
-                  className='w-full h-full rounded-xl mt-3'
-              />
-              <TabBarIcon name='play-circle-outline' className='absolute w-12 h-12' color='#fff'/>
-            </TouchableOpacity>
-      }
+      {play ? (
+        <Video
+          source={{ uri: video }}
+          className="w-full h-60 rounded-xl mt-3 bg-white/10"
+          resizeMode={ResizeMode.CONTAIN}
+          useNativeControls
+          shouldPlay
+          onPlaybackStatusUpdate={(status) => {
+            //@ts-ignore
+            if (status.didJustFinish) {
+              setPlay(false);
+            }
+          }}
+        />
+      ) : (
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={() => setPlay(!play)}
+          className="w-full h-60 rounded-xl mt-3 relative justify-center items-center"
+        >
+          <Image
+            source={{ uri: thumbnail }}
+            resizeMode="cover"
+            className="w-full h-full rounded-xl mt-3"
+          />
+          <TabBarIcon
+            name="play-circle-outline"
+            className="absolute w-12 h-12"
+            color="#fff"
+          />
+        </TouchableOpacity>
+      )}
     </View>
   );
 }

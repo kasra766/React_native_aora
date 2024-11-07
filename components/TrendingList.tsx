@@ -1,14 +1,14 @@
 import {
   FlatList,
-  Image,
   ImageBackground,
-  Text,
   TouchableOpacity,
   ViewToken,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { useState } from "react";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
+import { ResizeMode, Video } from "expo-av";
+
 interface ITrendingListProps {
   posts: any[];
 }
@@ -18,18 +18,18 @@ interface ITrendingItemProps {
 }
 
 const zoomIn = {
-  0: {
+  "0": {
     scale: 0.9,
   },
-  1: {
+  "1": {
     scale: 1.1,
   },
 };
 const zoomOut = {
-  0: {
+  "0": {
     scale: 1,
   },
-  1: {
+  "1": {
     scale: 0.9,
   },
 };
@@ -39,11 +39,25 @@ function TrendingItem({ item, activeItemId }: ITrendingItemProps) {
   return (
     <Animatable.View
       className="mr-5"
-      animataion={activeItemId === item.$id ? zoomIn : zoomOut}
+      //@ts-ignore
+      animation={activeItemId === item.$id ? zoomIn : zoomOut}
       duration={500}
     >
       {play ? (
-        <Text>Playing</Text>
+        <Video
+          source={{ uri: item.video }}
+          className="w-52 h-72 rounded-[35px] mt-3 bg-white/10"
+          resizeMode={ResizeMode.CONTAIN}
+          useNativeControls
+          shouldPlay
+
+          onPlaybackStatusUpdate={(status) => {
+            //@ts-ignore
+            if (status.didJustFinish) {
+              setPlay(false);
+            }
+          }}
+        />
       ) : (
         <TouchableOpacity
           activeOpacity={0.7}
