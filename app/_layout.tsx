@@ -49,7 +49,8 @@ export default function RootLayout() {
           <Stack.Screen name="index" options={{ headerShown: false }} />
           <Stack.Screen
             name="search/[query]"
-            options={{ headerShown: false }}
+            // options={{ headerShown: false }}
+            options={{ headerTitle: "Search video" }}
           />
           <Stack.Screen name="+not-found" />
         </Stack>

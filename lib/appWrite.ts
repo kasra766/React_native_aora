@@ -97,7 +97,7 @@ export async function getAllPosts() {
       config.databaseId,
       config.videoCollectionId,
     );
-    return posts.documents
+    return posts.documents;
   } catch (error) {
     throw new Error(error as any);
   }
@@ -106,11 +106,24 @@ export async function getAllPosts() {
 export async function getLatestPosts() {
   try {
     const posts = await databases.listDocuments(
-        config.databaseId,
-        config.videoCollectionId,
-        [Query.orderDesc('$createdAt'),Query.limit(7)]
+      config.databaseId,
+      config.videoCollectionId,
+      [Query.orderDesc("$createdAt"), Query.limit(7)],
     );
-    return posts.documents
+    return posts.documents;
+  } catch (error) {
+    throw new Error(error as any);
+  }
+}
+
+export async function searchPosts(query: string) {
+  try {
+    const posts = await databases.listDocuments(
+      config.databaseId,
+      config.videoCollectionId,
+      [Query.search("title", query)],
+    );
+    return posts.documents;
   } catch (error) {
     throw new Error(error as any);
   }
