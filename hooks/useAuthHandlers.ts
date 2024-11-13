@@ -22,7 +22,6 @@ export function useSignInHandlers() {
       setUser(result);
       setIsLogin(true);
       Alert.alert("Success", "User signed in successfully");
-
       router.replace("/home");
     } catch (error) {
       Alert.alert("Error", (error as any).message);

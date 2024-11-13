@@ -132,13 +132,22 @@ export async function searchPosts(query: string) {
 export async function getUserPosts(userId: string) {
   try {
     const posts = await databases.listDocuments(
-        config.databaseId,
-        config.videoCollectionId,
-        [Query.equal("creator", userId)]
+      config.databaseId,
+      config.videoCollectionId,
+      [Query.equal("creator", userId)],
     );
 
     return posts.documents;
   } catch (error) {
     throw new Error(error as any);
+  }
+}
+
+export async function signOut() {
+  try {
+    const session = await account.deleteSession("current");
+    return session;
+  } catch (e) {
+    throw new Error(e as any);
   }
 }

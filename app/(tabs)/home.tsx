@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useAppWrite } from "@/hooks/useAppWrite";
 import {getAllPosts, getLatestPosts} from "@/lib/appWrite";
 import { VideoCard } from "@/components/VideoCard";
+import {useGlobalContext} from "@/context/useGlobalContext";
 
 const mockData = [
   {
@@ -24,7 +25,7 @@ const mockData = [
 export default function Home() {
   const { data: posts, isLoading, reFetch } = useAppWrite(getAllPosts);
   const { data: latestPosts} = useAppWrite(getLatestPosts);
-
+const {user} = useGlobalContext()
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = async () => {
     setRefreshing(true);
@@ -53,7 +54,7 @@ export default function Home() {
                   Welcome back
                 </Text>
                 <Text className="text-2xl font-psemibold text-white ">
-                  JSMastry
+                  {user?.username}
                 </Text>
               </View>
               <View className="mt-1.5">

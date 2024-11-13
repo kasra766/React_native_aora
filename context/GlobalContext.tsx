@@ -12,11 +12,11 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
       setIsLoading(true);
       try {
         const res = await getCurrentUser();
-        setIsLogin(true);
+        if (!res) throw new Error("User not found");
         setUser(res);
+        setIsLogin(true);
       } catch (e) {
         console.error(e);
-        setIsLogin(false);
         setUser(null);
       } finally {
         setIsLoading(false);
