@@ -1,13 +1,12 @@
-import { Tabs } from "expo-router";
+import { Redirect, Tabs } from "expo-router";
 import React, { type ComponentProps } from "react";
 
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
-import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
-import { ThemedView } from "@/components/ThemedView";
-import { ThemedText } from "@/components/ThemedText";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Text, View } from "react-native";
+import { useGlobalContext } from "@/context/useGlobalContext";
+import { Loader } from "@/components/Loader";
+import { StatusBar } from "expo-status-bar";
 
 interface ITabIconProps {
   focused: boolean;
@@ -17,32 +16,37 @@ interface ITabIconProps {
 }
 function TabIcon({ focused, color, icon, name }: ITabIconProps) {
   return (
-    <View className="grid gap-2 items-center">
+    <View className="flex-col space-y-2 items-center">
       <TabBarIcon name={icon} color={color} style={{ marginBottom: 0 }} />
-      <Text
-        className={`${focused ? "font-psemibold" : "font-pregular"} text-xs`}
-        style={{ color: color }}
-      >
-        {name}
-      </Text>
+      {/*<Text*/}
+      {/*  className={`${focused ? "font-psemibold" : "font-pregular"} text-xs flex-nowrap whitespace-nowrap`}*/}
+      {/*  style={{ color: color }}*/}
+      {/*>*/}
+      {/*  {name}*/}
+      {/*</Text>*/}
     </View>
   );
 }
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
+  const { isLoading, isLogin } = useGlobalContext();
+  if (!isLoading && !isLogin) return <Redirect href={"/sign-in"} />;
   return (
+      <>
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: "#FFA001",
         tabBarInactiveTintColor: "#CDCDE0",
-        tabBarShowLabel: false,
+        // tabBarShowLabel: false,
+        tabBarHideOnKeyboard: true,
+          tabBarLabelStyle:{fontSize:12},
         tabBarStyle: {
           backgroundColor: "#161622",
           borderTopWidth: 1,
           borderTopColor: "#232533",
           height: 84,
+          overflow: "hidden",
+          // paddingTop: 15,
         },
       }}
     >
@@ -108,5 +112,8 @@ export default function TabLayout() {
         }}
       />
     </Tabs>
+          <Loader isLoading={isLoading}/>
+          <StatusBar backgroundColor='#161612' style="light"/>
+      </>
   );
 }

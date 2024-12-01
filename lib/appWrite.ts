@@ -4,8 +4,11 @@ import {
   Client,
   Databases,
   ID,
+  ImageGravity,
   Query,
+  Storage,
 } from "react-native-appwrite";
+
 export const config = {
   endpoint: "https://cloud.appwrite.io/v1",
   platform: "com.aoraReactNative.aora",
@@ -25,6 +28,7 @@ client
   .setPlatform(config.platform); // Your application ID or bundle ID.
 
 const account = new Account(client);
+const storage = new Storage(client);
 const avatars = new Avatars(client);
 const databases = new Databases(client);
 // Register User
@@ -149,5 +153,81 @@ export async function signOut() {
     return session;
   } catch (e) {
     throw new Error(e as any);
+  }
+}
+
+// Upload File
+export async function uploadFile(file: any, type: "image" | "video") {
+  if (!file) return;
+
+  const { mimeType, ...rest } = file;
+  const asset = { type: mimeType, ...rest };
+
+  try {
+    const uploadedFile = await storage.createFile(
+      config.storageId,
+      ID.unique(),
+      asset,
+    );
+
+    const fileUrl = await getFilePreview(uploadedFile.$id, type);
+    return fileUrl;
+  } catch (error) {
+    throw new Error(error as any);
+  }
+}
+
+// Get File Preview
+export async function getFilePreview(fileId: string, type: "image" | "video") {
+  let fileUrl;
+
+  try {
+    if (type === "video") {
+      fileUrl = storage.getFileView(config.storageId, fileId);
+    } else if (type === "image") {
+      fileUrl = storage.getFilePreview(
+        config.storageId,
+        fileId,
+        2000,
+        2000,
+        ImageGravity.Top,
+        100,
+      );
+    } else {
+      throw new Error("Invalid file type");
+    }
+
+    if (!fileUrl) throw Error;
+
+    return fileUrl;
+  } catch (error) {
+    throw new Error(error as any);
+  }
+}
+
+// Create Video Post
+export async function createVideoPost(form: any) {
+  try {
+    const [thumbnailUrl, videoUrl] = await Promise.all([
+      uploadFile(form.thumbnail, "image"),
+      uploadFile(form.video, "video"),
+    ]);
+
+    const newPost = await databases.createDocument(
+      config.databaseId,
+      config.videoCollectionId,
+      ID.unique(),
+      {
+        title: form.title,
+        thumbnail: thumbnailUrl,
+        video: videoUrl,
+        prompt: form.prompt,
+        creator: form.userId,
+      },
+    );
+
+    return newPost;
+  } catch (error) {
+    throw new Error(error as any);
   }
 }

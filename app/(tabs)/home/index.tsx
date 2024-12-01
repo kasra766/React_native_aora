@@ -6,34 +6,24 @@ import { TrendingList } from "@/components/TrendingList";
 import { EmptyState } from "@/components/EmptyState";
 import { useState } from "react";
 import { useAppWrite } from "@/hooks/useAppWrite";
-import {getAllPosts, getLatestPosts} from "@/lib/appWrite";
+import { getAllPosts, getLatestPosts } from "@/lib/appWrite";
 import { VideoCard } from "@/components/VideoCard";
-import {useGlobalContext} from "@/context/useGlobalContext";
+import { useGlobalContext } from "@/context/useGlobalContext";
 
-const mockData = [
-  {
-    id: 1,
-  },
-  {
-    id: 2,
-  },
-  {
-    id: 3,
-  },
-];
 
 export default function Home() {
   const { data: posts, isLoading, reFetch } = useAppWrite(getAllPosts);
-  const { data: latestPosts} = useAppWrite(getLatestPosts);
-const {user} = useGlobalContext()
+  const { data: latestPosts } = useAppWrite(getLatestPosts);
+  const { user } = useGlobalContext();
   const [refreshing, setRefreshing] = useState(false);
+
   const onRefresh = async () => {
     setRefreshing(true);
     await reFetch();
     setRefreshing(false);
   };
   return (
-    <SafeAreaView className="  bg-primary h-full">
+    <SafeAreaView className=" bg-primary h-full">
       <FlatList
         data={posts ?? []}
         keyExtractor={(item) => item.$id}
@@ -65,13 +55,13 @@ const {user} = useGlobalContext()
                 />
               </View>
             </View>
-            <SearchInput  placeholder="Serach for a video topic" />
+            <SearchInput placeholder="Serach for a video topic" />
             <View className="w-full flex-1 pt-5 pb-8">
               <Text className="text-gray-100 text-lg font-pregular mb-3">
                 Latest Videos
               </Text>
             </View>
-            <TrendingList posts={latestPosts??[]} />
+            <TrendingList posts={latestPosts ?? []} />
           </View>
         )}
         ListEmptyComponent={() => (
