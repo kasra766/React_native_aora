@@ -40,7 +40,7 @@ export default function Home() {
           <View className="my-6 px-4">
             <View className="justify-between items-start flex-row mb-6">
               <View>
-                <Text className="font-pmedium text-sm text-gray-100">
+                <Text testID='Header' className="font-pmedium text-sm text-gray-100">
                   Welcome back
                 </Text>
                 <Text className="text-2xl font-psemibold text-white ">

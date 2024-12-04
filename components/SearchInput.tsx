@@ -32,6 +32,7 @@ export function SearchInput({
         placeholderTextColor="#CDCDE0"
         {...inputProps}
         onChangeText={setQuery}
+        testID='searchInputField'
       />
 
       <TouchableOpacity onPress={handleSubmitQuery}>

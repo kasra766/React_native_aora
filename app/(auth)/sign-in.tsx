@@ -9,8 +9,8 @@ import { useSignInHandlers } from "@/hooks/useAuthHandlers";
 export default function SignIn() {
   const { isSubmitting, setForm, form, handleSubmit } = useSignInHandlers();
   return (
-    <SafeAreaView>
-      <ScrollView contentContainerStyle={{ height: "100%" }}>
+    <SafeAreaView className='h-full bg-primary'>
+      <ScrollView >
         <View className="w-full flex justify-center h-full px-4 my-6">
           <Image
             source={images.logo}
